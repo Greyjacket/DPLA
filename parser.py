@@ -139,12 +139,12 @@ for input in filelist:
 
 				for item in collection:
 					try:
-						title = item['title'][0]
+						collection_title = item['title'][0]
 						id = item['id']
 					except:
-						title = ""
+						collection_title = ""
 						id = ""
-					string = string + "Title: " + title + ", Id: " + id
+					string = string + "Title: " + collection_title + ", Id: " + id
 							
 					if len(collection) > 1:
 						string = string + " | "
