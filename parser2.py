@@ -25,11 +25,13 @@ for input in filelist:
 	writer.writerow(header_row)
 
 	with open(input) as json_file:
-		data = json.load(json_file)
-		print "Data has been loaded, parsing now...\n"
-
+		#data = json.load(json_file)
+		data = ijson.items(json_file, '')
+		# https://stackoverflow.com/questions/37898065/memory-issues-while-parsing-json-file-in-ijson
 		for s in data:
+			print s
 			source = s['_source']
+
 			try:
 				id = source['id'].encode()
 			except:
