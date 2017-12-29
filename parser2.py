@@ -26,10 +26,9 @@ for input in filelist:
 
 	with open(input) as json_file:
 		#data = json.load(json_file)
-		data = ijson.items(json_file, '')
+		data = ijson.items(json_file, 'item')
 		# https://stackoverflow.com/questions/37898065/memory-issues-while-parsing-json-file-in-ijson
 		for s in data:
-			print s
 			source = s['_source']
 
 			try:
