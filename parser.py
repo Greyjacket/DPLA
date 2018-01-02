@@ -25,11 +25,12 @@ for input in filelist:
 	writer.writerow(header_row)
 
 	with open(input) as json_file:
-		data = json.load(json_file)
-		print "Data has been loaded, parsing now...\n"
+
+		data = ijson.items(json_file, 'item')
 
 		for s in data:
 			source = s['_source']
+
 			try:
 				id = source['id'].encode()
 			except:
