@@ -70,7 +70,7 @@ for input in filelist:
 				string = ""
 				for item in descriptions:
 					if len(descriptions) > 1:
-						description = item.encode() + " | "
+						description = item.encode() #+ " | "
 					else:
 						description = item.encode()
 					string = string + description
@@ -83,7 +83,7 @@ for input in filelist:
 				string = ""
 				for item in formats:
 					if len(formats) > 1:
-						format = item.encode() + " | "
+						format = item.encode() #+ " | "
 					else:
 						format = item.encode()
 					string = string + format
@@ -96,7 +96,7 @@ for input in filelist:
 				string = ""
 				for item in identifiers:
 					if len(identifiers) > 1:
-						identifier = item.encode() + " | "
+						identifier = item.encode() #+ " | "
 					else:
 						identifier = item.encode()
 					string = string + identifier
@@ -128,7 +128,7 @@ for input in filelist:
 				string = ""
 				for item in titles:
 					if len(titles) > 1:
-						title = item.encode() + " | "
+						title = item.encode() #+ " | "
 					else:
 						title = item.encode()
 					string = string + title
