@@ -30,6 +30,11 @@ for input in filelist:
 
 		for s in data:
 			source = s['_source']
+			
+			try:
+				source_resource = source['sourceResource']
+			except:
+				print "Warning: No source resource in record ID: " + id
 
 			try:
 				id = source['id'].encode()
@@ -40,9 +45,13 @@ for input in filelist:
 			except:
 				ingest_type = ""
 			try:
-				ingestion_sequence = source['ingestionSequence'].encode()
+				ingestion_sequence = str(source['ingestionSequence']).encode()
 			except:
-				ingestion_sequence = ""
+				try:
+					ingestion_sequence = str(source['ingestionSequence'][0]).encode()
+				except:
+					ingestion_sequence = ""
+
 			try:
 				data_provider = source['dataProvider'].encode()
 			except:
@@ -54,16 +63,15 @@ for input in filelist:
 			try:
 				is_shown_at = source['isShownAt'].encode()
 			except:
-				is_shown_at = ""
+				try:
+					is_shown_at = source['isShownAt'][0].encode()
+				except:					
+					is_shown_at = ""
+
 			try:
 				_object = source['object'].encode()
 			except:
 				_object = ""
-
-			try:
-				source_resource = source['sourceResource']
-			except:
-				print "Warning: No source resource in record ID: " + id
 
 			try:
 				descriptions = source_resource['description']
@@ -80,6 +88,13 @@ for input in filelist:
 
 			try:
 				formats = source_resource['format']
+			except:
+				try:
+					formats = source_resource['format'][0]
+				except:
+					formats = ""
+					format = ""
+			if format is not "":		
 				string = ""
 				for item in formats:
 					if len(formats) > 1:
@@ -88,8 +103,7 @@ for input in filelist:
 						format = item.encode()
 					string = string + format
 				format = string.encode()
-			except:
-				format = ""
+
 
 			try:
 				identifiers = source_resource['identifier']
@@ -121,7 +135,16 @@ for input in filelist:
 			try:
 				rights = source_resource['rights'].encode()
 			except:
-				rights = ""
+				try:				
+					rights = source_resource['rights'][0].encode()
+				except:
+					try:
+						rights = source['rights'].encode()
+					except:
+						try:
+							rights = source['rights'][0].encode()
+						except:
+							rights = ""
 
 			try:
 				titles = source_resource['title']
