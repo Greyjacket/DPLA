@@ -43,35 +43,35 @@ for input in filelist:
 			try:
 				ingest_type = source['ingestType'].encode()
 			except:
-				ingest_type = ""
+				ingest_type = "N/A"
 			try:
 				ingestion_sequence = str(source['ingestionSequence']).encode()
 			except:
 				try:
 					ingestion_sequence = str(source['ingestionSequence'][0]).encode()
 				except:
-					ingestion_sequence = ""
+					ingestion_sequence = "N/A"
 
 			try:
 				data_provider = source['dataProvider'].encode()
 			except:
-				data_provider = ""
+				data_provider = "N/A"
 			try:
 				original_record = source['originalRecord'].encode()
 			except:
-				original_record = ""
+				original_record = "N/A"
 			try:
 				is_shown_at = source['isShownAt'].encode()
 			except:
 				try:
 					is_shown_at = source['isShownAt'][0].encode()
 				except:					
-					is_shown_at = ""
+					is_shown_at = "N/A"
 
 			try:
 				_object = source['object'].encode()
 			except:
-				_object = ""
+				_object = "N/A"
 
 			try:
 				descriptions = source_resource['description']
@@ -84,7 +84,7 @@ for input in filelist:
 					string = string + description
 				description = string.encode()
 			except:
-				description = ""
+				description = "N/A"
 
 			try:
 				formats = source_resource['format']
@@ -92,9 +92,16 @@ for input in filelist:
 				try:
 					formats = source_resource['format'][0]
 				except:
-					formats = ""
-					format = ""
-			if format is not "":		
+					try:
+						formats = source['format']
+					except:
+						try:
+							formats = source['format'][0]	
+						except:
+							formats = "N/A"
+							format = "N/A"
+
+			if format is not "N/A":		
 				string = ""
 				for item in formats:
 					if len(formats) > 1:
@@ -116,7 +123,7 @@ for input in filelist:
 					string = string + identifier
 				identifier = string.encode()
 			except:
-				identifier = ""
+				identifier = "N/A"
 
 			try:
 				language = source_resource['language'][0]
@@ -129,8 +136,8 @@ for input in filelist:
 				except:
 					language_iso = ""
 			except:
-				language_name = ""
-				language_iso = ""
+				language_name = "N/A"
+				language_iso = "N/A"
 
 			try:
 				rights = source_resource['rights'].encode()
@@ -144,7 +151,7 @@ for input in filelist:
 						try:
 							rights = source['rights'][0].encode()
 						except:
-							rights = ""
+							rights = "N/A"
 
 			try:
 				titles = source_resource['title']
@@ -157,7 +164,7 @@ for input in filelist:
 					string = string + title
 				title = string.encode()
 			except:
-				title = ""
+				title = "N/A"
 
 			try:
 				collection = source_resource['collection']
@@ -177,12 +184,12 @@ for input in filelist:
 
 				collection = string.encode()
 			except:
-				collection = ""
+				collection = "N/A"
 
 			try:
 				type = source_resource['type']
 			except:
-				type = ""
+				type = "N/A"
 
 			try:
 				dates = source_resource['date']
@@ -203,7 +210,7 @@ for input in filelist:
 						string = string + " | "
 				date = string.encode()
 			except:
-				date = ""
+				date = "N/A"
 
 			try:
 				spatial = source_resource['spatial']
@@ -246,7 +253,7 @@ for input in filelist:
 
 				spatial = string.encode()
 			except:
-				spatial = ""
+				spatial = "N/A"
 
 			try:
 				subjects = source_resource['subject']
@@ -265,7 +272,7 @@ for input in filelist:
 
 				subject = string.encode()
 			except:
-				subject = ""
+				subject = "N/A"
 
 			write_tuple = (id, ingest_type,ingestion_sequence, data_provider, original_record, 
 				is_shown_at, _object, description, format, identifier, language_name, language_iso, 
