@@ -17,11 +17,10 @@ for input in filelist:
 
 	# initialize csv writer
 	writer = csv.writer(newFile)
-
-	header_row = ('Id', 'IngestType', 'IngestionSequence', 'DataProvider', 
-		'OriginalRecord', 'isShownAt', 'Object', 'Description', 'Format', 'Identifier', 'LanguageName', 'LanguageISO',
-		'Rights', 'Title', 'Collection','Type', 'Date', 'Spatial', 'Subject')
-
+	
+	header_row = ('ID', 'Title', 'Format', 'Description', 'Subject', 'Contributor',
+		'Date', 'Spatial', 'Collection', 'isShownAt', 'Object', 'Identifier', 'DataProvider', 'Rights')
+	
 	writer.writerow(header_row)
 
 	with open(input) as json_file:
@@ -39,27 +38,21 @@ for input in filelist:
 			try:
 				id = source['id'].encode()
 			except:
-				id = ""
-			try:
-				ingest_type = source['ingestType'].encode()
-			except:
-				ingest_type = "N/A"
-			try:
-				ingestion_sequence = str(source['ingestionSequence']).encode()
-			except:
 				try:
-					ingestion_sequence = str(source['ingestionSequence'][0]).encode()
+					id = source['provider']['id'].encode()
 				except:
-					ingestion_sequence = "N/A"
-
+					id = "N/A"
+			
 			try:
 				data_provider = source['dataProvider'].encode()
 			except:
 				data_provider = "N/A"
+			'''
 			try:
 				original_record = source['originalRecord'].encode()
 			except:
 				original_record = "N/A"
+			'''
 			try:
 				is_shown_at = source['isShownAt'].encode()
 			except:
@@ -67,12 +60,12 @@ for input in filelist:
 					is_shown_at = source['isShownAt'][0].encode()
 				except:					
 					is_shown_at = "N/A"
-
+			
 			try:
 				_object = source['object'].encode()
 			except:
 				_object = "N/A"
-
+			
 			try:
 				descriptions = source_resource['description']
 				string = ""
@@ -126,20 +119,6 @@ for input in filelist:
 				identifier = "N/A"
 
 			try:
-				language = source_resource['language'][0]
-				try:
-					language_name = language['name'].encode()
-				except:
-					language_name = ""
-				try:
-					language_iso = language['iso639_3'].encode()
-				except:
-					language_iso = ""
-			except:
-				language_name = "N/A"
-				language_iso = "N/A"
-
-			try:
 				rights = source_resource['rights'].encode()
 			except:
 				try:				
@@ -173,11 +152,11 @@ for input in filelist:
 				for item in collection:
 					try:
 						collection_title = item['title'][0]
-						id = item['id']
+						item_id = item['id']
 					except:
 						collection_title = ""
-						id = ""
-					string = string + "Title: " + collection_title + ", Id: " + id
+						item_id = ""
+					string = string + "Title: " + collection_title + ", Id: " + item_id
 							
 					if len(collection) > 1:
 						string = string + " | "
@@ -185,11 +164,6 @@ for input in filelist:
 				collection = string.encode()
 			except:
 				collection = "N/A"
-
-			try:
-				type = source_resource['type']
-			except:
-				type = "N/A"
 
 			try:
 				dates = source_resource['date']
@@ -274,10 +248,15 @@ for input in filelist:
 			except:
 				subject = "N/A"
 
-			write_tuple = (id, ingest_type,ingestion_sequence, data_provider, original_record, 
-				is_shown_at, _object, description, format, identifier, language_name, language_iso, 
-				rights, title, collection, type, date, spatial, subject)
-			
+			try:
+				contributor = source_resource['contributor'][0].encode()
+			except:
+				contributor = "N/A"
+
+			created = ""
+
+			write_tuple = (id, title, format, description, subject, contributor, date, spatial, collection, is_shown_at, _object, identifier, data_provider,rights)
+
 			writer.writerow(write_tuple)
 
 	print "File written to " + output
