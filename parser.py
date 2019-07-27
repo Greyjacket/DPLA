@@ -17,19 +17,28 @@ for input in filelist:
 
 	# initialize csv writer
 	writer = csv.writer(newFile)
-	
+
 	header_row = ('ID', 'Title', 'Format', 'Description', 'Subject', 'Contributor',
 		'Date', 'Spatial', 'Collection', 'isShownAt', 'Object', 'Identifier', 'DataProvider', 'Rights')
-	
+
 	writer.writerow(header_row)
 
 	with open(input) as json_file:
 
-		data = ijson.items(json_file, 'item')
+		try:
+			test = json.loads(json_file)
+		except:
+			print('File is not valid JSON')
+			sys.exit(1)
+
+		try:
+			data = ijson.items(json_file, 'item')
+		except Exception as e:
+			print e
 
 		for s in data:
 			source = s['_source']
-			
+
 			try:
 				source_resource = source['sourceResource']
 			except:
@@ -42,7 +51,7 @@ for input in filelist:
 					id = source['provider']['id'].encode()
 				except:
 					id = "N/A"
-			
+
 			try:
 				data_provider = source['dataProvider'].encode()
 			except:
@@ -58,14 +67,14 @@ for input in filelist:
 			except:
 				try:
 					is_shown_at = source['isShownAt'][0].encode()
-				except:					
+				except:
 					is_shown_at = "N/A"
-			
+
 			try:
 				_object = source['object'].encode()
 			except:
 				_object = "N/A"
-			
+
 			try:
 				descriptions = source_resource['description']
 				string = ""
@@ -89,12 +98,12 @@ for input in filelist:
 						formats = source['format']
 					except:
 						try:
-							formats = source['format'][0]	
+							formats = source['format'][0]
 						except:
 							formats = "N/A"
 							format = "N/A"
 
-			if format is not "N/A":		
+			if format is not "N/A":
 				string = ""
 				for item in formats:
 					if len(formats) > 1:
@@ -121,7 +130,7 @@ for input in filelist:
 			try:
 				rights = source_resource['rights'].encode()
 			except:
-				try:				
+				try:
 					rights = source_resource['rights'][0].encode()
 				except:
 					try:
@@ -157,7 +166,7 @@ for input in filelist:
 						collection_title = ""
 						item_id = ""
 					string = string + "Title: " + collection_title + ", Id: " + item_id
-							
+
 					if len(collection) > 1:
 						string = string + " | "
 
@@ -179,7 +188,7 @@ for input in filelist:
 						begin = ""
 						end = ""
 					string = string + "Display Date: " + display_date + ", Begin: " + begin + ", End: " + end
-							
+
 					if len(dates) > 1:
 						string = string + " | "
 				date = string.encode()
@@ -221,7 +230,7 @@ for input in filelist:
 						state = ""
 
 					string = string + "Name: " + name + ", Coordinates: " + coordinates + ", City: " + city + ", County: " + county + ", Country: " + country + ", Region: " + region + ", State: " + state
-					
+
 					if len(spatial) > 1:
 						string = string + " | "
 
@@ -239,8 +248,8 @@ for input in filelist:
 					except:
 						name = ""
 
-					string = string + "Name: " + name 
-					
+					string = string + "Name: " + name
+
 					if len(subjects) > 1:
 						string = string + " | "
 
